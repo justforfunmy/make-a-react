@@ -6,6 +6,12 @@ function mapConfigToProps(props, config) {
     }
   }
 }
+/**
+ *
+ * @param {*} type 组件本身
+ * @param {*} config 组件属性
+ * @param {*} children 子组件
+ */
 export default function createElement(type, config, children) {
   const props = {};
   mapConfigToProps(props, config);

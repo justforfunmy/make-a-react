@@ -1,3 +1,9 @@
+/**
+ *
+ * @param {*} vnode 组件
+ * @param {*} container 父级容器
+ * @param {*} callback 回调函数
+ */
 export default function render(vnode, container, callback) {
   // while (container.firstChild) {
   //   container.removeChild(container.firstChild);
