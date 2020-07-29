@@ -1,3 +1,9 @@
+---
+title: 实现一个简易的react(二):组件渲染
+description: 实现一个简易版的 react（不含fiber架构），仅仅为了表达思想，可能有多处不严谨。
+meta: React
+---
+
 # 组件渲染
 
 我们在使用 React 时，一般都在入口文件处加以下代码：
@@ -64,6 +70,12 @@ export default class Component {
 这里用到了 document 的一些基本操作，包括创建元素，设置属性等：
 
 ```js
+//对于字符节点
+if (typeof vnode === 'string') {
+  const text = document.createTextNode(vnode);
+  container.appendChild(text);
+  return text;
+}
 //对于标签
 if (typeof type === 'string') {
   const element = document.createElement(type);
@@ -83,10 +95,6 @@ if (typeof type === 'string') {
       props.children.forEach((item) => {
         element.appendChild(render(item, element));
       });
-    } else if (typeof props.children === 'string') {
-      //子组件已经是字符串时，直接创建字符节点
-      const text = document.createTextNode(props.children);
-      element.appendChild(text);
     } else {
       element.appendChild(render(props.children, element));
     }

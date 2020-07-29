@@ -12,7 +12,7 @@ function mapConfigToProps(props, config) {
  * @param {*} config 组件属性
  * @param {*} children 子组件
  */
-export default function createElement(type, config, children) {
+function createElement(type, config, children) {
   const props = {};
   mapConfigToProps(props, config);
 
@@ -38,3 +38,5 @@ export default function createElement(type, config, children) {
     props
   };
 }
+
+export default createElement;

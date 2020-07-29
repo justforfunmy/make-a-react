@@ -1,3 +1,9 @@
+---
+title: 实现一个简易的react(一):虚拟DOM
+description: 实现一个简易版的 react（不含fiber架构），仅仅为了表达思想，可能有多处不严谨。
+meta: React
+---
+
 # Virtual DOM
 
 实现一个简易版的 react，仅仅为了表达思想，可能有多处不严谨。
