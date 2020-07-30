@@ -1,5 +1,6 @@
 import handleLifeCycle from './lifeCycle';
 import emptyContainer from './emptyContainer';
+import diff from './diff';
 
 // 添加属性
 function setProperty(element, props) {
@@ -17,25 +18,25 @@ function setProperty(element, props) {
 }
 
 // 生命周期
-function executeLifeCycle(instance) {
-  if (!instance.vnode.update) {
+function executeLifeCycle(instance, container) {
+  if (!instance.rdom) {
     handleLifeCycle(instance, 'componentWillMount');
-  }
-  if (instance.vnode.update) {
+    const vdom = instance.render();
+    const rdom = renderComponent(vdom, container);
+    instance.rdom = rdom;
+    handleLifeCycle(instance, 'componentDidMount');
+  } else {
     handleLifeCycle(instance, 'componentWillReceiveProps');
     if (!handleLifeCycle(instance, 'shouldComponentUpdate', instance.state, instance.props)) {
       return null;
     }
-    emptyContainer(instance.rDom);
-  }
-  const vdom = instance.render();
-  if (!instance.vnode.update) {
-    handleLifeCycle(instance, 'componentDidMount');
-  }
-  if (instance.vnode.update) {
+    const vdom = instance.render();
+    emptyContainer(instance.rdom);
+    const rdom = renderComponent(vdom, container);
+    instance.rdom = rdom;
     handleLifeCycle(instance, 'componentDidUpdate');
   }
-  return vdom;
+  return instance.rdom;
 }
 
 /**
@@ -45,37 +46,45 @@ function executeLifeCycle(instance) {
  * @param {*} callback 回调函数
  */
 function renderComponent(vnode, container, callback) {
+  // 如果组件为空，则停止渲染，用于处理shouldComponentUpdate返回false的情况
   if (!vnode) {
     return container;
   }
-  if (typeof vnode === 'string') {
+
+  const { props, type } = vnode;
+  let vdom;
+  let ins;
+
+  // 如果是vnode是字符串，则处理为字符节点
+  if (typeof vnode === 'string' || typeof vnode === 'number') {
     const text = document.createTextNode(vnode);
     container.appendChild(text);
     return text;
   }
-  const { props, type } = vnode;
 
-  if (typeof type === 'function') {
-    let vdom;
-    let rDom;
-    if (type.prototype && type.prototype.render) {
-      // 如果是挂载阶段，需要实例化
-      if (!vnode.update) {
-        // eslint-disable-next-line new-cap
-        const ins = new type(props);
-        ins.vnode = vnode;
-        ins.container = container;
-        vdom = executeLifeCycle(ins);
-        rDom = renderComponent(vdom, container);
-        ins.rDom = rDom;
-        return rDom;
-      }
-      vdom = executeLifeCycle(this);
+  if (type.prototype && type.prototype.render) {
+    if (this && this.rdom) {
+      ins = this;
     } else {
-      vdom = type(props);
+      // eslint-disable-next-line new-cap
+      ins = new type(props);
+      ins.vnode = vnode;
+      ins.container = container;
     }
-    return renderComponent(vdom, container);
+    const rdom = executeLifeCycle(ins, container);
+    return rdom;
   }
+
+  if (typeof type === 'function' && !type.prototype.render) {
+    ins = {};
+    ins.vnode = vnode;
+    ins.container = container;
+    vdom = type(props);
+    const rdom = renderComponent(vdom, container);
+    ins.rdom = rdom;
+    return rdom;
+  }
+
   if (typeof type === 'string') {
     const element = document.createElement(type);
     setProperty(element, props);
@@ -96,8 +105,7 @@ function renderComponent(vnode, container, callback) {
 }
 
 function render(vnode, container, callback) {
-  emptyContainer(container);
-  return renderComponent(vnode, container, callback);
+  diff(null, vnode, container);
 }
 
 export { renderComponent, render };

@@ -1,4 +1,4 @@
-import { renderComponent } from '../react-dom/DomRender';
+import { renderComponent } from '../react-dom/diff';
 
 export default class Component {
   constructor(props) {
@@ -15,8 +15,7 @@ export default class Component {
       ...this.state,
       ...state
     };
-    this.vnode.update = true;
-    renderComponent.call(this, this.vnode, this.rDom);
+    renderComponent(this);
   }
 
   shouldComponentUpdate() {

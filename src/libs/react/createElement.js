@@ -6,6 +6,14 @@ function mapConfigToProps(props, config) {
     }
   }
 }
+
+function hasValidKey(config) {
+  return config.key !== undefined;
+}
+
+function hasValidRef(config) {
+  return config.ref !== undefined;
+}
 /**
  *
  * @param {*} type 组件本身
@@ -14,6 +22,17 @@ function mapConfigToProps(props, config) {
  */
 function createElement(type, config, children) {
   const props = {};
+  let key = null;
+  let ref = null;
+  if (config != null) {
+    // 验证ref和key是否有效，ref和key要单独处理
+    if (hasValidRef(config)) {
+      ref = config.ref;
+    }
+    if (hasValidKey(config)) {
+      key = `${config.key}`;
+    }
+  }
   mapConfigToProps(props, config);
 
   const childrenLength = arguments.length - 2;
@@ -35,6 +54,8 @@ function createElement(type, config, children) {
   }
   return {
     type,
+    key,
+    ref,
     props
   };
 }

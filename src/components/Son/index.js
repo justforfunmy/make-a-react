@@ -1,13 +1,12 @@
 /* eslint-disable no-useless-constructor */
 /* eslint-disable class-methods-use-this */
 import React from '../../libs/react/index';
-import logo from '../../assets/logo.png';
 
-export default class Welcome extends React.Component {
+export default class Son extends React.Component {
   constructor() {
     super(...arguments);
     this.state = {
-      name: 'welcome'
+      name: 'son'
     };
   }
 
@@ -35,11 +34,11 @@ export default class Welcome extends React.Component {
 
   render() {
     return (
-      <div>
-        <span>{this.props.title}</span>
-        <img src={logo} />
-        <div>name:{this.state.name}</div>
-        <button onClick={this.handleClick.bind(this)}>change</button>
+      <div className="son">
+        <h1>component:son</h1>
+        <span>FromFatherTitle:{this.props.title}</span>
+        <div>statename:{this.state.name}</div>
+        <button onClick={this.handleClick.bind(this)}>{1}</button>
       </div>
     );
   }
