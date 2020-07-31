@@ -16,6 +16,16 @@ export default class Son extends React.Component {
 
   componentDidMount() {
     console.log('did mount');
+    for (let i = 0; i < 10; i++) {
+      this.setState(
+        {
+          name: Math.random()
+        },
+        () => {
+          console.log(this.state.name);
+        }
+      );
+    }
   }
 
   shouldComponentUpdate() {

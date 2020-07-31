@@ -214,7 +214,7 @@ function setArribute(dom, key, value) {
 
 ## diffComponent
 
-组件对比，类型对比主要是看构造函数是否一致.不一致则移除重新创建，一致则对比组件属性
+组件对比，类型对比主要是看构造函数是否一致.不一致则移除重新创建，一致则对比组件属性。对于组件而言，真实 dom 是创建的实例，虚拟 dom 是 render 函数执行后的 jsx
 
 ```js
 function diffComponent(dom, vnode) {

@@ -1,4 +1,4 @@
-import { render } from './DomRender';
+import { render } from './render';
 
 export default {
   render

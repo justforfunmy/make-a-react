@@ -1,4 +1,4 @@
-import { renderComponent } from '../react-dom/diff';
+import { enqueueSetState } from '../react-dom/stateQueue';
 
 export default class Component {
   constructor(props) {
@@ -7,15 +7,11 @@ export default class Component {
 
   /**
    *
-   * @param {*} state 新的state
+   * @param {*} stateChange 新的state
    * @param {*} callback 回调函数
    */
-  setState(state, callback) {
-    this.state = {
-      ...this.state,
-      ...state
-    };
-    renderComponent(this);
+  setState(stateChange, callback) {
+    enqueueSetState(stateChange, this, callback);
   }
 
   shouldComponentUpdate() {
