@@ -123,3 +123,9 @@ function useEffect(callback, depArray) {
 ```
 
 我们可以发现，当第二个参数是空数组时，依赖一直不会变化，回调函数只会执行一次，就相当于生命周期函数`componentDidMount`
+
+参考文章：
+
+[React Hooks 原理](https://github.com/brickspert/blog/issues/26)
+[深入 React hooks — 原理 & 实现](https://segmentfault.com/a/1190000020832946)
+[阅读源码后，来讲讲 React Hooks 是怎么实现的](https://juejin.im/post/6844903704437456909)
