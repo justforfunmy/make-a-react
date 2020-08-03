@@ -41,6 +41,7 @@ function createComponent(component, props) {
     inst = new Component(props);
     inst.constructor = component;
     inst.render = function () {
+      window.currentComponent = this;
       return this.constructor(props);
     };
   }

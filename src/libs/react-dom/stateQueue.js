@@ -15,14 +15,15 @@ function enqueueSetState(state, component, callback) {
     defer()(flushQueue);
   }
   queue.push({ state, component, callback });
-  // 如果待渲染的组件队列中不含有该组件，则组件队列中加入该组件
-  if (!renderQueue.some((item) => item === component)) {
-    enqueueRender(component);
-  }
+
+  enqueueRender(component);
 }
 
 function enqueueRender(component) {
-  renderQueue.push(component);
+  // 如果待渲染的组件队列中不含有该组件，则组件队列中加入该组件
+  if (!renderQueue.some((item) => item === component)) {
+    renderQueue.push(component);
+  }
 }
 
 function flushQueue() {
@@ -60,4 +61,4 @@ function defer() {
   };
 }
 
-export { enqueueSetState, flushQueue };
+export { enqueueSetState, flushQueue, enqueueRender };
