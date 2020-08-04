@@ -3,14 +3,15 @@ import Son from '../Son';
 import { useState, useEffect } from '../../libs/react/hooks';
 
 const Demo = (props) => {
+  console.log('demo function run');
   const [count, setCount] = useState(2);
   const [number, setNumber] = useState(1);
   const handleClick = () => {
     setNumber(number * 2);
   };
   useEffect(() => {
-    console.log(count);
-  }, [count]);
+    setCount(6);
+  }, []);
   useEffect(() => {
     console.log(number);
   }, [number]);
@@ -24,14 +25,19 @@ const Demo = (props) => {
   );
 };
 
-const Father = (props) => (
-  <div className="father">
-    {/* <h1>component:father</h1>
+const Father = (props) => {
+  const [number, setNumber] = useState(3);
+  return (
+    <div className="father">
+      {/* <h1>component:father</h1>
       <span className="title">FromAppText:{props.name}</span>
       <Son title="welcome" /> */}
 
-    <Demo />
-  </div>
-);
+      <div>number:{number}</div>
+      <button onClick={() => setNumber(number * 10)}>x10</button>
+      <Demo />
+    </div>
+  );
+};
 
 export default Father;

@@ -65,6 +65,9 @@ function setComponentProps(component, props) {
 function renderComponent(component) {
   let base;
 
+  // hooks的cursor置零，按顺序从头执行hook
+  component.cursor = 0;
+
   const renderer = component.render();
 
   if (component.base && component.componentWillUpdate) {

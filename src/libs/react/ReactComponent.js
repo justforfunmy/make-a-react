@@ -3,6 +3,8 @@ import { enqueueSetState } from '../react-dom/stateQueue';
 export default class Component {
   constructor(props) {
     this.props = props;
+    this.memorizedState = [];
+    this.cursor = 0;
   }
 
   /**
