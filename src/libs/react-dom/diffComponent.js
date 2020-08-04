@@ -1,5 +1,6 @@
 import Component from '../react/ReactComponent';
 import diff from './diff';
+import { setCurrentComponent } from './current';
 
 function diffComponent(dom, vnode) {
   let c = dom && dom._component;
@@ -41,7 +42,7 @@ function createComponent(component, props) {
     inst = new Component(props);
     inst.constructor = component;
     inst.render = function () {
-      window.currentComponent = this;
+      setCurrentComponent(this);
       return this.constructor(props);
     };
   }
@@ -86,12 +87,14 @@ function renderComponent(component) {
 }
 
 function unmountComponent(comp) {
+  if (comp.componentWillUnmount) comp.componentWillUnmount();
+  if (comp.unmount) comp.unmount();
   removeNode(comp.base);
 }
 
 function removeNode(dom) {
   if (dom && dom.parentNode) {
-    dom.parentNode.removeNode(dom);
+    dom.parentNode.removeChild(dom);
   }
 }
 
